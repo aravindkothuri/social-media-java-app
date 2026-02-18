@@ -21,11 +21,12 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
+        <mysql.connector.version>8.0.33</mysql.connector.version>
     </properties>
     
     <!-- Dependencies -->
     <dependencies>
-        <!-- Java Servlet API (provided by the container) -->
+        <!-- Java Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -33,7 +34,7 @@
             <scope>provided</scope>
         </dependency>
         
-        <!-- JSP API (provided by the container) -->
+        <!-- JSP API -->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>
@@ -41,22 +42,28 @@
             <scope>provided</scope>
         </dependency>
         
-        <!-- JSTL for JSP pages -->
+        <!-- JSTL -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
         
-        <!-- WebSocket API (if needed for real-time features) -->
+        <!-- MySQL Connector -->
         <dependency>
-            <groupId>javax.websocket</groupId>
-            <artifactId>javax.websocket-api</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
         </dependency>
         
-        <!-- Logging (optional but recommended) -->
+        <!-- HikariCP Connection Pool -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+        
+        <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -94,47 +101,7 @@
                 <version>3.3.2</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>com.socialmedia.SocialMediaApp</mainClass>
-                        </manifest>
-                    </archive>
-                    <!-- Include resources -->
-                    <webResources>
-                        <resource>
-                            <directory>src/main/resources</directory>
-                            <targetPath>WEB-INF/classes</targetPath>
-                            <includes>
-                                <include>**/*.properties</include>
-                                <include>**/*.xml</include>
-                                <include>**/*.css</include>
-                                <include>**/*.js</include>
-                            </includes>
-                        </resource>
-                        <resource>
-                            <directory>src/main/webapp</directory>
-                            <targetPath></targetPath>
-                            <includes>
-                                <include>**/*.html</include>
-                                <include>**/*.jsp</include>
-                                <include>**/*.css</include>
-                                <include>**/*.js</include>
-                                <include>**/*.png</include>
-                                <include>**/*.jpg</include>
-                                <include>**/*.gif</include>
-                                <include>**/*.ico</include>
-                            </includes>
-                        </resource>
-                    </webResources>
                 </configuration>
-            </plugin>
-            
-            <!-- Surefire Plugin for running tests -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M9</version>
             </plugin>
             
             <!-- Resources Plugin -->
@@ -146,47 +113,23 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-            
-            <!-- Source JAR Plugin (optional) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
     
     <!-- Profiles for different environments -->
     <profiles>
-        <!-- Development Profile -->
         <profile>
             <id>development</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
-                <build.profile.id>development</build.profile.id>
-            </properties>
         </profile>
-        
-        <!-- Production Profile -->
         <profile>
             <id>production</id>
-            <properties>
-                <build.profile.id>production</build.profile.id>
-            </properties>
         </profile>
     </profiles>
     
-    <!-- Repository Configuration (if needed) -->
+    <!-- Repository Configuration -->
     <repositories>
         <repository>
             <id>central</id>
@@ -199,38 +142,3 @@
         </repository>
     </repositories>
 </project>
-
-<!-- MySQL Connector -->
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.33</version>
-</dependency>
-
-<!-- Connection Pool (HikariCP) -->
-<dependency>
-    <groupId>com.zaxxer</groupId>
-    <artifactId>HikariCP</artifactId>
-    <version>5.0.1</version>
-</dependency>
-
-<!-- JDBC Template (Spring JDBC - optional) -->
-<dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-jdbc</artifactId>
-    <version>5.3.29</version>
-</dependency>
-
-<!-- Database Migration (Flyway - optional) -->
-<dependency>
-    <groupId>org.flywaydb</groupId>
-    <artifactId>flyway-core</artifactId>
-    <version>9.16.0</version>
-</dependency>
-
-<!-- JPA API (optional) -->
-<dependency>
-    <groupId>javax.persistence</groupId>
-    <artifactId>javax.persistence-api</artifactId>
-    <version>2.2</version>
-</dependency>
